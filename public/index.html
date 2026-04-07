@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tsavo Wild Honey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --honey: #E8A020;
+    --honey-dark: #B8720A;
+    --honey-light: #F5C842;
+    --cream: #FDF6E3;
+    --brown: #3D1F00;
+    --brown-light: #7A4010;
+    --white: #FFFDF7;
+    --shadow: rgba(61,31,0,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--brown); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 2rem;
+    background: rgba(253,246,227,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(232,160,32,0.2);
+  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--honey-dark); text-decoration: none; }
+  .logo span { color: var(--honey); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--brown); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--honey); }
+  .nav-cart {
+    background: var(--honey); color: white; border: none; border-radius: 50px;
+    padding: 0.6rem 1.4rem; font-family: 'DM Sans', sans-serif; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .nav-cart:hover { background: var(--honey-dark); transform: scale(1.03); }
+  .cart-count {
+    background: var(--brown); color: white; border-radius: 50%;
+    width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 6rem 2rem 4rem;
+    background: radial-gradient(ellipse at 70% 50%, #F5C84240 0%, transparent 60%),
+                linear-gradient(160deg, var(--cream) 60%, #FDECC8 100%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, #F5C84260, transparent 70%);
+    animation: pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1);opacity:0.6} 50%{transform:scale(1.1);opacity:1} }
+  .hero-content { max-width: 560px; position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-block; background: var(--honey); color: white;
+    padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.05em; margin-bottom: 1.5rem; animation: fadeDown 0.6s ease both;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 6vw, 4.5rem);
+    line-height: 1.1; margin-bottom: 1.2rem; animation: fadeDown 0.7s 0.1s ease both;
+  }
+  .hero h1 em { color: var(--honey); font-style: italic; }
+  .hero p { font-size: 1.1rem; color: var(--brown-light); line-height: 1.7; margin-bottom: 2rem; animation: fadeDown 0.7s 0.2s ease both; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeDown 0.7s 0.3s ease both; }
+  .btn-primary {
+    background: var(--honey); color: white; border: none; border-radius: 50px;
+    padding: 0.9rem 2rem; font-size: 1rem; font-weight: 500; cursor: pointer;
+    text-decoration: none; transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 6px 20px rgba(232,160,32,0.4); display: inline-block;
+  }
+  .btn-primary:hover { background: var(--honey-dark); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(232,160,32,0.45); }
+  .btn-outline {
+    border: 2px solid var(--brown); color: var(--brown); background: transparent;
+    border-radius: 50px; padding: 0.9rem 2rem; font-size: 1rem; font-weight: 500;
+    cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-block;
+  }
+  .btn-outline:hover { background: var(--brown); color: white; }
+  .hero-visual {
+    position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+    font-size: 13rem; animation: float 4s ease-in-out infinite; user-select: none;
+  }
+  @keyframes float { 0%,100%{transform:translateY(-50%) rotate(-5deg)} 50%{transform:translateY(-55%) rotate(3deg)} }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* FEATURES */
+  .features { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; padding: 3rem 2rem; background: var(--honey); }
+  .feature { display: flex; align-items: center; gap: 0.6rem; color: white; font-weight: 500; }
+  .feature-icon { font-size: 1.3rem; }
+
+  /* PRODUCTS */
+  .products { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 3rem; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .section-header p { color: var(--brown-light); font-size: 1rem; }
+  .product-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.8rem;
+  }
+  .product-card {
+    background: white; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow); transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer; position: relative;
+  }
+  .product-card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px var(--shadow); }
+  .product-img { width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 5rem; position: relative; }
+  .product-badge {
+    position: absolute; top: 12px; left: 12px; background: var(--honey); color: white;
+    font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.7rem; border-radius: 50px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .product-info { padding: 1.2rem; }
+  .product-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.3rem; }
+  .product-desc { color: var(--brown-light); font-size: 0.88rem; line-height: 1.5; margin-bottom: 1rem; }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .product-price { font-size: 1.2rem; font-weight: 700; color: var(--honey-dark); }
+  .add-btn {
+    background: var(--honey); color: white; border: none; border-radius: 50px;
+    padding: 0.5rem 1.2rem; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; transition: background 0.2s, transform 0.1s;
+  }
+  .add-btn:hover { background: var(--honey-dark); transform: scale(1.05); }
+  .add-btn.added { background: #4CAF50; }
+
+  /* Mobile swipe */
+  @media (max-width: 700px) {
+    .product-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; gap: 1rem; padding-bottom: 1rem; }
+    .product-grid::-webkit-scrollbar { display: none; }
+    .product-card { min-width: 240px; scroll-snap-align: start; flex-shrink: 0; }
+    .swipe-hint { display: block !important; }
+  }
+  .swipe-hint { display: none; text-align: center; color: var(--brown-light); font-size: 0.82rem; margin-top: 0.5rem; }
+
+  /* CHECKOUT SECTION */
+  .checkout-section {
+    background: linear-gradient(135deg, var(--brown) 0%, #5A2D05 100%);
+    color: white; padding: 5rem 2rem; position: relative; overflow: hidden;
+  }
+  .checkout-section::before { content: '🍯'; position: absolute; right: -2rem; top: -2rem; font-size: 15rem; opacity: 0.08; }
+  .checkout-inner { max-width: 700px; margin: 0 auto; position: relative; z-index: 1; }
+  .checkout-inner h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 0.4rem; color: var(--honey-light); }
+  .checkout-inner > p { color: rgba(255,255,255,0.7); margin-bottom: 2.5rem; }
+
+  /* STEPS */
+  .steps { display: flex; gap: 0; margin-bottom: 2.5rem; }
+  .step {
+    flex: 1; text-align: center; position: relative;
+    padding-bottom: 1rem; border-bottom: 2px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.4); font-size: 0.82rem; font-weight: 500; cursor: default;
+    transition: all 0.3s;
+  }
+  .step.active { color: var(--honey-light); border-bottom-color: var(--honey); }
+  .step.done { color: #4CAF50; border-bottom-color: #4CAF50; }
+  .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.1);
+    margin-bottom: 0.4rem; font-size: 0.85rem; font-weight: 700;
+  }
+  .step.active .step-num { background: var(--honey); color: white; }
+  .step.done .step-num { background: #4CAF50; color: white; }
+
+  /* FORM PANELS */
+  .form-panel { display: none; }
+  .form-panel.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label { font-size: 0.85rem; color: rgba(255,255,255,0.7); font-weight: 500; }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px; padding: 0.8rem 1rem; color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .form-group input::placeholder, .form-group select option:first-child { color: rgba(255,255,255,0.4); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--honey); background: rgba(255,255,255,0.15);
+  }
+  .form-group select option { background: var(--brown); color: white; }
+  .form-group textarea { resize: vertical; min-height: 70px; }
+
+  /* MINI ORDER SUMMARY in form */
+  .mini-summary {
+    background: rgba(255,255,255,0.07); border-radius: 12px;
+    padding: 1rem 1.2rem; margin-bottom: 1.2rem; border: 1px solid rgba(255,255,255,0.12);
+  }
+  .mini-summary-title { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .mini-summary-items { font-size: 0.9rem; color: rgba(255,255,255,0.8); }
+  .mini-summary-item { display: flex; justify-content: space-between; padding: 2px 0; }
+  .mini-summary-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem; color: var(--honey-light); margin-top: 0.6rem; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 0.6rem; }
+
+  /* MPESA PANEL */
+  .mpesa-box {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(245,200,66,0.4);
+    border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center;
+  }
+  .mpesa-steps { text-align: left; margin: 1.2rem 0; }
+  .mpesa-step { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
+  .mpesa-step-num {
+    width: 28px; height: 28px; border-radius: 50%; background: var(--honey);
+    color: white; font-weight: 700; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+  }
+  .mpesa-step-text { font-size: 0.92rem; color: rgba(255,255,255,0.85); line-height: 1.5; }
+  .mpesa-step-text strong { color: white; }
+  .mpesa-number-display {
+    background: rgba(245,200,66,0.15); border: 2px solid var(--honey-light);
+    border-radius: 12px; padding: 1rem; margin: 1rem 0;
+    font-size: 1.8rem; font-weight: 700; letter-spacing: 0.05em; color: var(--honey-light);
+  }
+  .mpesa-amount-display {
+    font-size: 1.2rem; color: rgba(255,255,255,0.9); margin-bottom: 0.3rem;
+  }
+
+  .code-input-wrap { position: relative; }
+  .code-input-wrap input { text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.1rem; font-weight: 700; text-align: center; }
+
+  /* FORM BUTTONS */
+  .form-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+  .btn-next, .btn-back, .btn-submit {
+    border-radius: 50px; padding: 0.9rem 2rem; font-size: 1rem; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; border: none; transition: all 0.2s;
+  }
+  .btn-next, .btn-submit { background: var(--honey); color: white; flex: 1; box-shadow: 0 6px 20px rgba(232,160,32,0.35); }
+  .btn-next:hover, .btn-submit:hover { background: var(--honey-dark); transform: translateY(-1px); }
+  .btn-back { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
+  .btn-back:hover { background: rgba(255,255,255,0.2); }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* SUCCESS */
+  .success-panel {
+    text-align: center; padding: 2rem 0;
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+  .success-panel.show { display: block; }
+  .success-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .success-panel h3 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--honey-light); margin-bottom: 0.5rem; }
+  .success-panel p { color: rgba(255,255,255,0.75); margin-bottom: 0.4rem; }
+  .order-id-display { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 0.6rem 1.2rem; display: inline-block; margin: 0.8rem 0; font-weight: 700; color: var(--honey-light); letter-spacing: 0.05em; }
+
+  /* CART DRAWER */
+  .cart-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(61,31,0,0.5); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+  .cart-drawer {
+    position: fixed; right: 0; top: 0; bottom: 0; z-index: 201;
+    width: 380px; max-width: 95vw; background: var(--white);
+    box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+    transform: translateX(100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    display: flex; flex-direction: column;
+  }
+  .cart-drawer.open { transform: translateX(0); }
+  .cart-header { padding: 1.5rem; border-bottom: 1px solid #e0d4c0; display: flex; align-items: center; justify-content: space-between; }
+  .cart-header h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; }
+  .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--brown); }
+  .cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+  .cart-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid #f0e8d8; }
+  .cart-item-emoji { font-size: 2rem; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-weight: 600; font-size: 0.95rem; }
+  .cart-item-price { color: var(--honey-dark); font-size: 0.9rem; }
+  .cart-item-qty { display: flex; align-items: center; gap: 0.5rem; }
+  .qty-btn { background: var(--cream); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 1rem; font-weight: 700; transition: background 0.15s; }
+  .qty-btn:hover { background: var(--honey); color: white; }
+  .cart-footer { padding: 1.5rem; border-top: 1px solid #e0d4c0; }
+  .cart-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; }
+  .checkout-btn { width: 100%; background: var(--honey); color: white; border: none; border-radius: 50px; padding: 0.9rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'DM Sans', sans-serif; }
+  .checkout-btn:hover { background: var(--honey-dark); }
+  .empty-cart-msg { color: var(--brown-light); text-align: center; margin-top: 2rem; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    background: var(--brown); color: white; padding: 0.9rem 1.5rem;
+    border-radius: 50px; font-size: 0.9rem; font-weight: 500;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.4s cubic-bezier(.175,.885,.32,1.275);
+    display: flex; align-items: center; gap: 0.5rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ERROR */
+  .form-error { background: rgba(220,53,69,0.2); border: 1px solid rgba(220,53,69,0.5); border-radius: 10px; padding: 0.8rem 1rem; color: #ffcdd2; font-size: 0.9rem; margin-bottom: 1rem; display: none; }
+  .form-error.show { display: block; }
+
+  footer { background: var(--brown); color: rgba(255,255,255,0.7); text-align: center; padding: 2rem; font-size: 0.85rem; }
+  footer strong { color: var(--honey-light); }
+
+  @media (max-width: 768px) {
+    nav .nav-links { display: none; }
+    .hero-visual { font-size: 7rem; right: 1rem; opacity: 0.5; }
+    .form-actions { flex-direction: column; }
+    .steps { gap: 0; }
+    .step { font-size: 0.72rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Tsavo <span>Wild Honey</span></a>
+  <ul class="nav-links">
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#checkout">Order</a></li>
+  </ul>
+  <button class="nav-cart" onclick="toggleCart()">
+    🛒 Cart <span class="cart-count" id="cartCount">0</span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-badge">🌿 100% Pure & Natural</span>
+    <h1>Wild honey from the heart of <em>Tsavo.</em></h1>
+    <p>Raw, unfiltered honey harvested ethically from the Tsavo wilderness. No additives, no shortcuts — just pure golden goodness.</p>
+    <div class="hero-ctas">
+      <a href="#products" class="btn-primary">Shop Honey</a>
+      <a href="#checkout" class="btn-outline">Place an Order</a>
+    </div>
+  </div>
+  <div class="hero-visual">🍯</div>
+</section>
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="feature"><span class="feature-icon">🌿</span> Raw & Unfiltered</div>
+  <div class="feature"><span class="feature-icon">🐝</span> Ethically Sourced</div>
+  <div class="feature"><span class="feature-icon">🚚</span> Fast Delivery</div>
+  <div class="feature"><span class="feature-icon">📱</span> Pay via M-Pesa</div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="section-header">
+    <h2>Our Honey Collection</h2>
+    <p>Swipe or scroll to explore our varieties</p>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+  <p class="swipe-hint">← Swipe to see more →</p>
+</section>
+
+<!-- CHECKOUT -->
+<section class="checkout-section" id="checkout">
+  <div class="checkout-inner">
+    <h2>Place Your Order</h2>
+    <p>Add items to your cart, fill in your details, and pay via M-Pesa Send Money.</p>
+
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step active" id="step-indicator-1">
+        <div><div class="step-num">1</div></div>Your Details
+      </div>
+      <div class="step" id="step-indicator-2">
+        <div><div class="step-num">2</div></div>Pay via M-Pesa
+      </div>
+      <div class="step" id="step-indicator-3">
+        <div><div class="step-num">3</div></div>Confirm
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="form-error" id="formError"></div>
+
+    <!-- PANEL 1: Details -->
+    <div class="form-panel active" id="panel1">
+      <div class="mini-summary" id="miniSummary">
+        <div class="mini-summary-title">Your cart</div>
+        <div class="mini-summary-items" id="miniSummaryItems">
+          <div style="color:rgba(255,255,255,0.4);">No items yet — add some honey above! 🍯</div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="fname" placeholder="Jane Mwangi" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="fphone" placeholder="07XX XXX XXX" required>
+        </div>
+        <div class="form-group full">
+          <label>Email Address (for confirmation)</label>
+          <input type="email" id="femail" placeholder="jane@email.com">
+        </div>
+        <div class="form-group full">
+          <label>Delivery Address *</label>
+          <input type="text" id="faddress" placeholder="e.g. Kilimani, Nairobi" required>
+        </div>
+        <div class="form-group full">
+          <label>Special Notes</label>
+          <textarea id="fnotes" placeholder="Gift wrapping, allergies, delivery instructions..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-next" onclick="goToStep2()">Continue to Payment →</button>
+      </div>
+    </div>
+
+    <!-- PANEL 2: M-Pesa Send Money -->
+    <div class="form-panel" id="panel2">
+      <div class="mpesa-box">
+        <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-bottom:0.5rem;">SEND MONEY TO</p>
+        <div class="mpesa-number-display" id="mpesaNumberDisplay">07XX XXX XXX</div>
+        <div class="mpesa-amount-display">Send exactly: <strong id="mpesaAmountDisplay" style="color:var(--honey-light);">Ksh 0</strong></div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;">Name will show as: <strong style="color:white;" id="mpesaNameDisplay">Tsavo Wild Honey</strong></p>
+
+        <div class="mpesa-steps">
+          <div class="mpesa-step">
+            <div class="mpesa-step-num">1</div>
+            <div class="mpesa-step-text">Open M-Pesa on your phone → <strong>Send Money</strong></div>
+          </div>
+          <div class="mpesa-step">
+            <div class="mpesa-step-num">2</div>
+            <div class="mpesa-step-text">Enter number <strong id="mpesaNumInline">07XX XXX XXX</strong> and amount <strong id="mpesaAmtInline">Ksh 0</strong></div>
+          </div>
+          <div class="mpesa-step">
+            <div class="mpesa-step-num">3</div>
+            <div class="mpesa-step-text">Enter your M-Pesa PIN and confirm</div>
+          </div>
+          <div class="mpesa-step">
+            <div class="mpesa-step-num">4</div>
+            <div class="mpesa-step-text">You'll get an SMS like: <strong>"Confirmed. ABC123XY Sent Ksh X to..."</strong> — copy that code below</div>
+          </div>
+        </div>
+
+        <div class="form-group code-input-wrap" style="margin-top:0.5rem;">
+          <label style="color:rgba(255,255,255,0.7);">M-Pesa Confirmation Code *</label>
+          <input type="text" id="fmpesaCode" placeholder="e.g. ABC123XY" maxlength="12">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-back" onclick="goToStep(1)">← Back</button>
+        <button class="btn-next" onclick="goToStep3()">Confirm Order →</button>
+      </div>
+    </div>
+
+    <!-- PANEL 3: Review & Submit -->
+    <div class="form-panel" id="panel3">
+      <div class="mini-summary" id="reviewSummary" style="margin-bottom:1.2rem;"></div>
+      <div class="form-actions">
+        <button class="btn-back" onclick="goToStep(2)">← Back</button>
+        <button class="btn-submit" id="submitBtn" onclick="submitOrder()">🍯 Place Order</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-panel" id="successPanel">
+      <div class="success-icon">🎉</div>
+      <h3>Order Placed!</h3>
+      <p>Thank you for your order. We're verifying your M-Pesa payment.</p>
+      <div class="order-id-display" id="successOrderId"></div>
+      <p>We'll call you on <strong id="successPhone"></strong> to confirm dispatch.</p>
+      <p style="margin-top:1rem;font-size:0.85rem;">Check your email for a confirmation message.</p>
+      <button class="btn-primary" style="margin-top:1.5rem;" onclick="resetForm()">Place Another Order</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>Your Cart 🛒</h3>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="empty-cart-msg">Your cart is empty 🍯<br>Add some honey!</p>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">Ksh 0</span></div>
+    <button class="checkout-btn" onclick="goToCheckout()">Checkout →</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with ❤️ by <strong>Tsavo Wild Honey</strong> &nbsp;|&nbsp; © 2025 &nbsp;|&nbsp;
+     📞 <span id="footerPhone">+254 700 000 000</span> &nbsp;|&nbsp;
+     ✉️ hello@tsavowildhoney.co.ke</p>
+</footer>
+
+<script>
+  // ── CONFIG — update these! ─────────────────────────────────────────────────
+  const CONFIG = {
+    apiUrl: 'https://your-backend.railway.app', // ← change after deploying
+    mpesaNumber: '07XX XXX XXX',                // ← your M-Pesa number
+    mpesaName: 'Tsavo Wild Honey',              // ← name shown on M-Pesa
+    deliveryFee: 150
+  };
+
+  // ── Products ───────────────────────────────────────────────────────────────
+  const products = [
+    { id:1, name:'Wildflower Honey',  emoji:'🌸', desc:'Light & floral. Harvested from diverse wildflowers in the highlands.', price:850,  unit:'500g', badge:'Best Seller' },
+    { id:2, name:'Tsavo Wild Honey',  emoji:'🍯', desc:'Our signature raw honey straight from Tsavo National Park hives.',    price:1200, unit:'500g', badge:'Signature' },
+    { id:3, name:'Acacia Honey',      emoji:'🌼', desc:'Mild & crystal clear. Perfect for tea and baking.',                   price:1100, unit:'500g', badge:'' },
+    { id:4, name:'Creamed Honey',     emoji:'🧈', desc:'Smooth spreadable texture. Great for toast and pancakes.',             price:950,  unit:'400g', badge:'New' },
+    { id:5, name:'Comb Honey',        emoji:'🐝', desc:'Raw honey in the natural comb. Pure as it gets.',                     price:1500, unit:'300g', badge:'' },
+    { id:6, name:'Black Seed Honey',  emoji:'🖤', desc:'Infused with Nigella Sativa for extra wellness benefits.',             price:1350, unit:'400g', badge:'Wellness' },
+  ];
+
+  let cart = [];
+  let currentStep = 1;
+
+  // ── Render products ────────────────────────────────────────────────────────
+  function renderProducts() {
+    const grid = document.getElementById('productGrid');
+    const bgs = ['#FFF3DC','#FFF8F0','#FFFDE7','#F0FFF4','#FFF0F5','#F0F8FF'];
+    grid.innerHTML = products.map((p,i) => `
+      <div class="product-card">
+        <div class="product-img" style="background:${bgs[i]}">
+          ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+          ${p.emoji}
+        </div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-desc">${p.desc}</div>
+          <div class="product-footer">
+            <div class="product-price">Ksh ${p.price.toLocaleString()} <small style="font-weight:400;font-size:0.8rem;color:var(--brown-light)">/ ${p.unit}</small></div>
+            <button class="add-btn" id="btn-${p.id}" onclick="addToCart(${p.id})">Add +</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  // ── Cart ───────────────────────────────────────────────────────────────────
+  function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    const existing = cart.find(i => i.id === id);
+    if (existing) existing.qty++;
+    else cart.push({ ...product, qty: 1 });
+
+    const btn = document.getElementById(`btn-${id}`);
+    btn.textContent = '✓ Added'; btn.classList.add('added');
+    setTimeout(() => { btn.textContent = 'Add +'; btn.classList.remove('added'); }, 1500);
+
+    updateCartUI();
+    showToast(`${product.emoji} ${product.name} added!`);
+  }
+
+  function changeQty(id, delta) {
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+    updateCartUI();
+  }
+
+  function cartTotal() { return cart.reduce((s,i) => s + i.price * i.qty, 0); }
+  function orderTotal() { return cartTotal() + CONFIG.deliveryFee; }
+
+  function updateCartUI() {
+    const count = cart.reduce((s,i) => s+i.qty, 0);
+    document.getElementById('cartCount').textContent = count;
+    document.getElementById('cartTotal').textContent = `Ksh ${cartTotal().toLocaleString()}`;
+
+    const itemsEl = document.getElementById('cartItems');
+    if (!cart.length) {
+      itemsEl.innerHTML = '<p class="empty-cart-msg">Your cart is empty 🍯<br>Add some honey!</p>';
+    } else {
+      itemsEl.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <span class="cart-item-emoji">${item.emoji}</span>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">Ksh ${(item.price * item.qty).toLocaleString()}</div>
+          </div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+            <span>${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+          </div>
+        </div>`).join('');
+    }
+
+    // Update mini summary in form
+    const miniItems = document.getElementById('miniSummaryItems');
+    if (miniItems) {
+      if (!cart.length) {
+        miniItems.innerHTML = '<div style="color:rgba(255,255,255,0.4);">No items yet — add some honey above! 🍯</div>';
+      } else {
+        miniItems.innerHTML = cart.map(i => `
+          <div class="mini-summary-item">
+            <span>${i.emoji} ${i.name} x${i.qty}</span>
+            <span>Ksh ${(i.price*i.qty).toLocaleString()}</span>
+          </div>`).join('') +
+          `<div class="mini-summary-total"><span>Total (incl. delivery)</span><span>Ksh ${orderTotal().toLocaleString()}</span></div>`;
+      }
+    }
+  }
+
+  function toggleCart() {
+    document.getElementById('cartOverlay').classList.toggle('open');
+    document.getElementById('cartDrawer').classList.toggle('open');
+  }
+
+  function goToCheckout() {
+    toggleCart();
+    setTimeout(() => document.getElementById('checkout').scrollIntoView({ behavior:'smooth' }), 300);
+  }
+
+  // ── Step navigation ────────────────────────────────────────────────────────
+  function goToStep(n) {
+    document.querySelectorAll('.form-panel').forEach((p,i) => p.classList.toggle('active', i+1 === n));
+    document.querySelectorAll('.step').forEach((s,i) => {
+      s.classList.remove('active','done');
+      if (i+1 === n) s.classList.add('active');
+      else if (i+1 < n) s.classList.add('done');
+    });
+    currentStep = n;
+    hideError();
+  }
+
+  function goToStep2() {
+    if (!cart.length) return showError('Please add at least one item to your cart before continuing.');
+    const name = document.getElementById('fname').value.trim();
+    const phone = document.getElementById('fphone').value.trim();
+    const address = document.getElementById('faddress').value.trim();
+    if (!name || !phone || !address) return showError('Please fill in your name, phone, and delivery address.');
+
+    // Populate M-Pesa panel
+    document.getElementById('mpesaNumberDisplay').textContent = CONFIG.mpesaNumber;
+    document.getElementById('mpesaNameDisplay').textContent = CONFIG.mpesaName;
+    document.getElementById('mpesaAmountDisplay').textContent = `Ksh ${orderTotal().toLocaleString()}`;
+    document.getElementById('mpesaNumInline').textContent = CONFIG.mpesaNumber;
+    document.getElementById('mpesaAmtInline').textContent = `Ksh ${orderTotal().toLocaleString()}`;
+
+    goToStep(2);
+    document.getElementById('checkout').scrollIntoView({ behavior:'smooth' });
+  }
+
+  function goToStep3() {
+    const code = document.getElementById('fmpesaCode').value.trim().toUpperCase();
+    if (!code || code.length < 6) return showError('Please enter your M-Pesa confirmation code (e.g. ABC123XY).');
+    document.getElementById('fmpesaCode').value = code;
+
+    // Build review summary
+    const name = document.getElementById('fname').value.trim();
+    const phone = document.getElementById('fphone').value.trim();
+    const address = document.getElementById('faddress').value.trim();
+    const email = document.getElementById('femail').value.trim();
+
+    document.getElementById('reviewSummary').innerHTML = `
+      <div class="mini-summary-title">Review your order</div>
+      <div class="mini-summary-items">
+        ${cart.map(i => `<div class="mini-summary-item"><span>${i.emoji} ${i.name} x${i.qty}</span><span>Ksh ${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
+        <div class="mini-summary-total"><span>Total (incl. delivery)</span><span>Ksh ${orderTotal().toLocaleString()}</span></div>
+      </div>
+      <div style="margin-top:1rem;font-size:0.88rem;color:rgba(255,255,255,0.7);">
+        <strong style="color:white;">Delivering to:</strong> ${name}, ${phone}${email ? `, ${email}` : ''}<br>
+        <strong style="color:white;">Address:</strong> ${address}<br>
+        <strong style="color:white;">M-Pesa Code:</strong> <span style="color:var(--honey-light);font-weight:700;">${code}</span>
+      </div>`;
+
+    goToStep(3);
+    document.getElementById('checkout').scrollIntoView({ behavior:'smooth' });
+  }
+
+  // ── Submit order ───────────────────────────────────────────────────────────
+  async function submitOrder() {
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Placing order...';
+
+    const payload = {
+      name: document.getElementById('fname').value.trim(),
+      phone: document.getElementById('fphone').value.trim(),
+      email: document.getElementById('femail').value.trim(),
+      address: document.getElementById('faddress').value.trim(),
+      notes: document.getElementById('fnotes').value.trim(),
+      mpesaCode: document.getElementById('fmpesaCode').value.trim().toUpperCase(),
+      items: cart.map(i => ({ id:i.id, name:i.name, emoji:i.emoji, price:i.price, qty:i.qty, unit:i.unit })),
+      subtotal: cartTotal(),
+      delivery: CONFIG.deliveryFee,
+      total: orderTotal()
+    };
+
+    try {
+      const res = await fetch(`${CONFIG.apiUrl}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || 'Server error');
+
+      // Show success
+      document.querySelector('.steps').style.display = 'none';
+      document.querySelectorAll('.form-panel').forEach(p => p.style.display = 'none');
+      document.getElementById('successOrderId').textContent = data.orderId;
+      document.getElementById('successPhone').textContent = payload.phone;
+      document.getElementById('successPanel').classList.add('show');
+
+      cart = [];
+      updateCartUI();
+
+    } catch (err) {
+      showError(err.message || 'Something went wrong. Please try again.');
+      btn.disabled = false;
+      btn.textContent = '🍯 Place Order';
+    }
+  }
+
+  function resetForm() {
+    document.querySelector('.steps').style.display = '';
+    document.querySelectorAll('.form-panel').forEach(p => p.style.display = '');
+    document.getElementById('successPanel').classList.remove('show');
+    document.getElementById('fname').value = '';
+    document.getElementById('fphone').value = '';
+    document.getElementById('femail').value = '';
+    document.getElementById('faddress').value = '';
+    document.getElementById('fnotes').value = '';
+    document.getElementById('fmpesaCode').value = '';
+    goToStep(1);
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerHTML = '✅ ' + msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function showError(msg) {
+    const e = document.getElementById('formError');
+    e.textContent = msg; e.classList.add('show');
+  }
+  function hideError() { document.getElementById('formError').classList.remove('show'); }
+
+  // ── Init ───────────────────────────────────────────────────────────────────
+  document.getElementById('footerPhone').textContent = CONFIG.mpesaNumber;
+  renderProducts();
+</script>
+</body>
+</html>

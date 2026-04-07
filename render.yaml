@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: tsavo-wild-honey
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: YOUR_MPESA_NUMBER
+        sync: false
+      - key: YOUR_NAME
+        sync: false
+      - key: YOUR_EMAIL
+        sync: false
+      - key: FROM_EMAIL
+        sync: false
+      - key: PORT
+        value: 3000
