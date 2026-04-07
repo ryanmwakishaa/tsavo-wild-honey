@@ -5,8 +5,16 @@ const { Resend } = require('resend');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(express.json());
+
+// Catch JSON parse errors
+app.use((err, req, res, next) => {
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ error: 'Invalid JSON in request body.' });
+  }
+  next(err);
+});
 
 // ── Clients ───────────────────────────────────────────────────────────────────
 const supabase = createClient(
@@ -155,6 +163,12 @@ app.get('/api/orders', async (req, res) => {
   if (error) return res.status(500).json({ error: error.message });
   res.json(data);
 });
+
+// ── Health check ──────────────────────────────────────────────────────────────
+app.get('/api/health', (_, res) => res.json({ status: 'ok', service: 'Tsavo Wild Honey API' }));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🍯 Server running on port ${PORT}`));
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get('/api/health', (_, res) => res.json({ status: 'ok', service: 'Tsavo Wild Honey API' }));
