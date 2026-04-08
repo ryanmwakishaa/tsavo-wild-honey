@@ -169,9 +169,3 @@ app.get('/api/health', (_, res) => res.json({ status: 'ok', service: 'Tsavo Wild
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🍯 Server running on port ${PORT}`));
-
-// ── Health check ──────────────────────────────────────────────────────────────
-app.get('/api/health', (_, res) => res.json({ status: 'ok', service: 'Tsavo Wild Honey API' }));
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🍯 Server running on port ${PORT}`));
