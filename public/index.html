@@ -3,8 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tsavo Wild Honey</title>
+<title>Tsavo Wild Honey | Raw Wild Honey, Delivered in Nairobi</title>
+<meta name="description" content="Raw, unprocessed wild honey from Kenya: wildflower, acacia, creamed, comb and black seed honey. Order online, pay by M-Pesa, delivered to your door.">
+<meta name="theme-color" content="#E8A020">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tsavo Wild Honey | Raw Wild Honey from Kenya">
+<meta property="og:description" content="Raw wild honey, harvested in Kenya. Order online and pay by M-Pesa.">
+<meta property="og:locale" content="en_KE">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%AF%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -390,19 +399,19 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Full Name *</label>
-          <input type="text" id="fname" placeholder="Jane Mwangi" required>
+          <input type="text" id="fname" placeholder="Jane Mwangi" autocomplete="name" maxlength="80" required>
         </div>
         <div class="form-group">
           <label>Phone Number *</label>
-          <input type="tel" id="fphone" placeholder="07XX XXX XXX" required>
+          <input type="tel" id="fphone" placeholder="07XX XXX XXX" autocomplete="tel" inputmode="tel" maxlength="20" required>
         </div>
         <div class="form-group full">
           <label>Email Address (for confirmation)</label>
-          <input type="email" id="femail" placeholder="jane@email.com">
+          <input type="email" id="femail" placeholder="jane@email.com" autocomplete="email" maxlength="120">
         </div>
         <div class="form-group full">
           <label>Delivery Address *</label>
-          <input type="text" id="faddress" placeholder="e.g. Kilimani, Nairobi" required>
+          <input type="text" id="faddress" placeholder="e.g. Kilimani, Nairobi" autocomplete="street-address" maxlength="300" required>
         </div>
         <div class="form-group full">
           <label>Special Notes</label>
@@ -437,13 +446,13 @@
           </div>
           <div class="mpesa-step">
             <div class="mpesa-step-num">4</div>
-            <div class="mpesa-step-text">You'll get an SMS like: <strong>"Confirmed. ABC123XY Sent Ksh X to..."</strong> — copy that code below</div>
+            <div class="mpesa-step-text">You'll get an SMS like: <strong>"Confirmed. ABC123XYZ4 Sent Ksh X to..."</strong> — copy that code below</div>
           </div>
         </div>
 
         <div class="form-group code-input-wrap" style="margin-top:0.5rem;">
           <label style="color:rgba(255,255,255,0.7);">M-Pesa Confirmation Code *</label>
-          <input type="text" id="fmpesaCode" placeholder="e.g. ABC123XY" maxlength="12">
+          <input type="text" id="fmpesaCode" placeholder="e.g. ABC123XYZ4" autocapitalize="characters" autocomplete="off" maxlength="10">
         </div>
       </div>
       <div class="form-actions">
@@ -497,14 +506,14 @@
 <!-- FOOTER -->
 <footer>
   <p>Made with ❤️ by <strong>Tsavo Wild Honey</strong> &nbsp;|&nbsp; © 2025 &nbsp;|&nbsp;
-     📞 <span id="footerPhone">+254 700 000 000</span> &nbsp;|&nbsp;
+     📞 <span id="footerPhone">+254 716 439 840</span> &nbsp;|&nbsp;
      ✉️ hello@tsavowildhoney.co.ke</p>
 </footer>
 
 <script>
   // ── CONFIG — update these! ─────────────────────────────────────────────────
   const CONFIG = {
-    apiUrl: 'https://your-backend.railway.app', // ← change after deploying
+    apiUrl: 'https://your-backend.onrender.com', // ← change after deploying (no trailing slash)
     mpesaNumber: '07XX XXX XXX',                // ← your M-Pesa number
     mpesaName: 'Tsavo Wild Honey',              // ← name shown on M-Pesa
     deliveryFee: 150
@@ -638,6 +647,9 @@
     const phone = document.getElementById('fphone').value.trim();
     const address = document.getElementById('faddress').value.trim();
     if (!name || !phone || !address) return showError('Please fill in your name, phone, and delivery address.');
+    if (!/^(\+?254|0)[17]\d{8}$/.test(phone.replace(/[\s-]/g, ''))) return showError('Please enter a valid Kenyan phone number, e.g. 0712 345 678.');
+    const em = document.getElementById('femail').value.trim();
+    if (em && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return showError('That email address does not look right.');
 
     // Populate M-Pesa panel
     document.getElementById('mpesaNumberDisplay').textContent = CONFIG.mpesaNumber;
@@ -650,9 +662,11 @@
     document.getElementById('checkout').scrollIntoView({ behavior:'smooth' });
   }
 
+  const esc = (t) => String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
   function goToStep3() {
     const code = document.getElementById('fmpesaCode').value.trim().toUpperCase();
-    if (!code || code.length < 6) return showError('Please enter your M-Pesa confirmation code (e.g. ABC123XY).');
+    if (!/^[A-Z0-9]{10}$/.test(code)) return showError('M-Pesa codes are 10 letters/numbers, e.g. ABC123XYZ4. Check your SMS.');
     document.getElementById('fmpesaCode').value = code;
 
     // Build review summary
@@ -668,8 +682,8 @@
         <div class="mini-summary-total"><span>Total (incl. delivery)</span><span>Ksh ${orderTotal().toLocaleString()}</span></div>
       </div>
       <div style="margin-top:1rem;font-size:0.88rem;color:rgba(255,255,255,0.7);">
-        <strong style="color:white;">Delivering to:</strong> ${name}, ${phone}${email ? `, ${email}` : ''}<br>
-        <strong style="color:white;">Address:</strong> ${address}<br>
+        <strong style="color:white;">Delivering to:</strong> ${esc(name)}, ${esc(phone)}${email ? `, ${esc(email)}` : ''}<br>
+        <strong style="color:white;">Address:</strong> ${esc(address)}<br>
         <strong style="color:white;">M-Pesa Code:</strong> <span style="color:var(--honey-light);font-weight:700;">${code}</span>
       </div>`;
 
@@ -682,6 +696,9 @@
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.textContent = 'Placing order...';
+    const slowTimer = setTimeout(() => { btn.textContent = 'Waking up the server, hang on...'; }, 5000);
+    const ctrl = new AbortController();
+    const abortTimer = setTimeout(() => ctrl.abort(), 70000);
 
     const payload = {
       name: document.getElementById('fname').value.trim(),
@@ -690,19 +707,17 @@
       address: document.getElementById('faddress').value.trim(),
       notes: document.getElementById('fnotes').value.trim(),
       mpesaCode: document.getElementById('fmpesaCode').value.trim().toUpperCase(),
-      items: cart.map(i => ({ id:i.id, name:i.name, emoji:i.emoji, price:i.price, qty:i.qty, unit:i.unit })),
-      subtotal: cartTotal(),
-      delivery: CONFIG.deliveryFee,
-      total: orderTotal()
+      items: cart.map(i => ({ id:i.id, qty:i.qty })) // prices are set by the server
     };
 
     try {
       const res = await fetch(`${CONFIG.apiUrl}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: ctrl.signal
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
       if (!res.ok) throw new Error(data.error || 'Server error');
 
@@ -710,6 +725,7 @@
       document.querySelector('.steps').style.display = 'none';
       document.querySelectorAll('.form-panel').forEach(p => p.style.display = 'none');
       document.getElementById('successOrderId').textContent = data.orderId;
+      if (data.total && data.total !== orderTotal()) showToast('Total confirmed by server: Ksh ' + data.total.toLocaleString());
       document.getElementById('successPhone').textContent = payload.phone;
       document.getElementById('successPanel').classList.add('show');
 
@@ -717,9 +733,13 @@
       updateCartUI();
 
     } catch (err) {
-      showError(err.message || 'Something went wrong. Please try again.');
+      showError(err.name === 'AbortError'
+        ? 'The server is taking too long. Please try again in a minute.'
+        : (err.message || 'Something went wrong. Please try again.'));
       btn.disabled = false;
       btn.textContent = '🍯 Place Order';
+    } finally {
+      clearTimeout(slowTimer); clearTimeout(abortTimer);
     }
   }
 
